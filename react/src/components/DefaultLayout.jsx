@@ -21,6 +21,10 @@ const userNavigation = [
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
+const logout = (ev) => {
+    ev.preventDefault();
+    console.log('signout')
+}
 
 export default function DefaultLayout() {
     return (
@@ -44,7 +48,7 @@ export default function DefaultLayout() {
                                                 {navigation.map((item) => (
                                                     <NavLink
                                                         key={item.name}
-                                                        to={item.href}
+                                                        to={item.to}
                                                         className={({
                                                             isActive,
                                                         }) =>
@@ -52,7 +56,7 @@ export default function DefaultLayout() {
                                                                 isActive
                                                                     ? "bg-gray-900 text-white"
                                                                     : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                                                                "rounded-md px-3 py-2 text-sm font-medium"
+                                                                "px-3 py-2 rounded-md text-sm font-medium"
                                                             )
                                                         }
                                                     >
@@ -126,7 +130,7 @@ export default function DefaultLayout() {
                                                                                     : "",
                                                                                 "block px-4 py-2 text-sm text-gray-700"
                                                                             )}
-                                                                        >
+                                                                        onClick={(ev)=>logout(ev)}>
                                                                             {
                                                                                 item.name
                                                                             }
