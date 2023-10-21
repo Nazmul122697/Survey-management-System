@@ -1,10 +1,14 @@
-
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from "react-router-dom";
+import { userStateContext } from "../contexts/ContextProvider";
 const GuestLayouts = () => {
+    const { currentUser, userToken } = userStateContext();
+    if(userToken){
+        return <Navigate to='/' />
+    }
     return (
         <div>
             <div className="flex flex-col justify-center flex-1 min-h-full px-6 py-12 lg:px-8">
-             <Outlet />
+                <Outlet />
             </div>
         </div>
     );

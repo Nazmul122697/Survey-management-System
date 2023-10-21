@@ -1,14 +1,21 @@
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { NavLink, Outlet } from "react-router-dom";
+import {
+    Bars3Icon,
+    BellIcon,
+    XMarkIcon,
+    UserIcon,
+} from "@heroicons/react/24/outline";
+import { NavLink, Navigate, Outlet } from "react-router-dom";
+import { userStateContext } from "../contexts/ContextProvider";
+import Login from "../views/Login";
 
-const user = {
-    name: "Tom Cook",
-    email: "tom@example.com",
-    imageUrl:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-};
+// const user = {
+//     name: "Tom Cook",
+//     email: "tom@example.com",
+//     imageUrl:
+//         "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+// };
 const navigation = [
     { name: "Dashboard", to: "/dashboard" },
     { name: "Surveys", to: "/surveys" },
@@ -21,12 +28,16 @@ const userNavigation = [
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
-const logout = (ev) => {
-    ev.preventDefault();
-    console.log('signout')
-}
 
 export default function DefaultLayout() {
+    const { currentUser, userToken } = userStateContext();
+    if (!userToken) {
+        return <Navigate to="login" />;
+    }
+    const logout = (ev) => {
+        ev.preventDefault();
+        console.log("signout");
+    };
     return (
         <>
             <div className="min-h-full">
@@ -93,11 +104,7 @@ export default function DefaultLayout() {
                                                         <span className="sr-only">
                                                             Open user menu
                                                         </span>
-                                                        <img
-                                                            className="w-8 h-8 rounded-full"
-                                                            src={user.imageUrl}
-                                                            alt=""
-                                                        />
+                                                        <UserIcon className="w-6 h-6 bg-black/25 text-white p-2 rounded-full " />
                                                     </Menu.Button>
                                                 </div>
                                                 <Transition
@@ -130,7 +137,14 @@ export default function DefaultLayout() {
                                                                                     : "",
                                                                                 "block px-4 py-2 text-sm text-gray-700"
                                                                             )}
-                                                                        onClick={(ev)=>logout(ev)}>
+                                                                            onClick={(
+                                                                                ev
+                                                                            ) =>
+                                                                                logout(
+                                                                                    ev
+                                                                                )
+                                                                            }
+                                                                        >
                                                                             {
                                                                                 item.name
                                                                             }
@@ -193,18 +207,14 @@ export default function DefaultLayout() {
                                 <div className="pt-4 pb-3 border-t border-gray-700">
                                     <div className="flex items-center px-5">
                                         <div className="flex-shrink-0">
-                                            <img
-                                                className="w-10 h-10 rounded-full"
-                                                src={user.imageUrl}
-                                                alt=""
-                                            />
+                                            <UserIcon className="w-6 h-6 bg-black/25 text-white p-2 rounded-full " />
                                         </div>
                                         <div className="ml-3">
                                             <div className="text-base font-medium leading-none text-white">
-                                                {user.name}
+                                                {currentUser.name}
                                             </div>
                                             <div className="text-sm font-medium leading-none text-gray-400">
-                                                {user.email}
+                                                {currentUser.email}
                                             </div>
                                         </div>
                                         <button
