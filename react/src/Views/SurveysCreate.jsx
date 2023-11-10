@@ -15,8 +15,8 @@ const SurveysCreate = () => {
         questions: [],
     });
 
-    const onSubmit = () => {
-        console.log("ok");
+    const onSubmit = (ev) => {
+        ev.preventDefault()
     };
 
     const onImageChoose = () => {
